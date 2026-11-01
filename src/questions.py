@@ -9,6 +9,8 @@ class Question:
     options: list      # opciones como texto
     answer: int        # índice de la opción correcta
     explanation: str
+    level: int = 1      # dificultad (1 a 5)
+    topic: str = ""     # tema que se practica
 
 
 def _build(text, correct, explanation):
@@ -20,7 +22,24 @@ def _build(text, correct, explanation):
     return Question(text, [str(o) for o in opts], opts.index(correct), explanation)
 
 
+TOPICS = {
+    1: "Sumas y restas",
+    2: "Tablas de multiplicar",
+    3: "Jerarquía de operaciones",
+    4: "Divisiones y potencias",
+    5: "Ecuaciones simples",
+}
+
+
 def generate_question(level):
+    level = max(1, min(level, 5))
+    question = _generate(level)
+    question.level = level
+    question.topic = TOPICS[level]
+    return question
+
+
+def _generate(level):
     level = max(1, min(level, 5))
     if level == 1:  # sumas y restas
         a, b = random.randint(2, 15), random.randint(2, 15)
