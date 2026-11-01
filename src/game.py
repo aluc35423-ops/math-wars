@@ -1,5 +1,7 @@
 import pygame
 from src.settings import *
+from src.deck import Deck
+from src.ui import draw_card, draw_text
 
 
 class Game:
@@ -8,8 +10,10 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.SysFont("arial", 40, bold=True)
         self.running = True
+        # Demo temporal: una mano de prueba para ver las cartas
+        deck = Deck()
+        self.hand = [deck.draw() for _ in range(5)]
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -23,8 +27,12 @@ class Game:
 
     def draw(self):
         self.screen.fill(BG)
-        img = self.font.render("Math Wars", True, GOLD)
-        self.screen.blit(img, img.get_rect(center=(WIDTH // 2, HEIGHT // 2)))
+        draw_text(self.screen, "Math Wars - demo de cartas", (WIDTH // 2, 60), 32, GOLD, True, True)
+        total = len(self.hand) * (CARD_W + 12) - 12
+        x = (WIDTH - total) // 2
+        for card in self.hand:
+            draw_card(self.screen, card, pygame.Rect(x, HEIGHT // 2 - CARD_H // 2, CARD_W, CARD_H))
+            x += CARD_W + 12
         pygame.display.flip()
 
     def run(self):
