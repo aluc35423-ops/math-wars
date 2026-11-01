@@ -104,6 +104,8 @@ python main.py
 math-wars/
 ├── main.py              # Punto de entrada
 ├── requirements.txt
+├── CONTRIBUTING.md      # Políticas de PR y revisión
+├── .github/             # Plantillas de PR e issues
 └── src/
     ├── settings.py      # Constantes, reglas y colores
     ├── game.py          # Bucle principal, tablero y turnos
@@ -126,8 +128,48 @@ math-wars/
 
 ## 🌿 Flujo de trabajo (Git)
 
-El proyecto se desarrolla con ramas `feature/*` y Pull Requests hacia `main`,
-usando commits semánticos (`feat:`, `fix:`, `docs:`).
+El proyecto sigue un flujo con **ramas `feature/*`** y **Pull Requests** hacia `main`.
+Las reglas completas están en [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Ciclo de desarrollo
+
+```
+Issue → Rama → Commits → Pull Request → Peer Review → Merge a main
+```
+
+1. **Issue:** se registra la tarea con la plantilla de *Nueva funcionalidad* o *Reporte de error*.
+2. **Rama:** se crea desde `main` actualizado.
+   ```bash
+   git checkout main && git pull origin main
+   git checkout -b feature/nombre-de-la-tarea
+   ```
+3. **Commits semánticos:** `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`.
+   ```bash
+   git add .
+   git commit -m "feat: agregar combate por líneas"
+   git push -u origin feature/nombre-de-la-tarea
+   ```
+4. **Pull Request:** se abre hacia `main` con la plantilla (descripción, evidencia visual, pasos para probar, checklist) y **2 Reviewers**.
+5. **Peer Review:** los revisores descargan la rama, prueban el juego y dejan comentarios en línea. Emiten el dictamen *Approve* o *Request changes*.
+6. **Merge:** con al menos 1 aprobación y conversaciones resueltas, se usa **Squash and merge** y se elimina la rama.
+
+### Protección de la rama `main`
+
+| Regla | Estado |
+|---|---|
+| Requerir Pull Request antes de hacer merge | ✅ |
+| Requerir al menos 1 aprobación | ✅ |
+| Descartar aprobaciones al subir nuevos commits | ✅ |
+| Requerir que las conversaciones estén resueltas | ✅ |
+| Bloquear force push y eliminación de `main` | ✅ |
+| Aplicar las reglas también a administradores | ✅ |
+
+### Plantillas
+
+- Pull Request: [`templates/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md)
+- Issues: [`templates/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) (reporte de error y nueva funcionalidad)
+
+### Ramas del desarrollo inicial
 
 | Rama | Contenido |
 |---|---|
