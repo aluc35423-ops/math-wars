@@ -174,10 +174,12 @@ Issue → Rama → Commits → Pull Request → Peer Review → Merge a main
 | Rama | Contenido |
 |---|---|
 | `main` | Ventana y configuración base |
+| `docs/templates` | 	Readme, bugs structure, config, request structure, pull_request structure, guía de contribución |
 | `feature/cartas-y-mazo` | Cartas, catálogo y mazo |
 | `feature/tablero-y-jugador` | Jugador, tablero, energía y turnos |
 | `feature/preguntas-educativas` | Retos de matemáticas |
 | `feature/combate-e-ia` | Combate, IA y fin de juego |
+| `feature/mejora-de-diseno` | 	Rediseño visual: cartas, HUD, menú y animaciones |
 
 ## 🗺️ Ideas futuras
 
