@@ -2,6 +2,8 @@ import pygame
 from src.settings import *
 from src.player import Player
 from src.ui import draw_card, draw_text
+from src.questions import generate_question
+from src.quiz import QuizModal
 
 ENEMY_Y = 70
 PLAYER_Y = 280
@@ -21,6 +23,7 @@ class Game:
         self.player = Player("Jugador")
         self.enemy = Player("Rival")
         self.selected = None
+        self.quiz = None
         self.message = "Elige una carta de tu mano y luego una línea libre."
         self.player.start_turn()
 
@@ -45,9 +48,18 @@ class Game:
         elif not self.player.can_play(card):
             self.message = "No tienes energía suficiente."
         else:
+            # El nivel de dificultad de la pregunta depende del coste de la carta
+            question = generate_question(card.cost)
+            self.quiz = QuizModal(question, lambda ok: self.resolve_quiz(ok, card, lane))
+
+    def resolve_quiz(self, correct, card, lane):
+        if correct:
             self.player.play_card(card, lane)
-            self.message = f"{card.name} entra al campo."
-            self.selected = None
+            self.message = f"¡Correcto! {card.name} entra al campo."
+        else:
+            self.player.energy = max(0, self.player.energy - 1)
+            self.message = "Respuesta incorrecta: pierdes 1 de energía. ¡Inténtalo de nuevo!"
+        self.selected = None
 
     def end_turn(self):
         self.selected = None
@@ -55,6 +67,10 @@ class Game:
         self.message = "Nuevo turno."
 
     def on_click(self, pos):
+        if self.quiz:
+            if self.quiz.handle_click(pos):
+                self.quiz = None
+            return
         if self.end_btn.collidepoint(pos):
             self.end_turn()
             return
@@ -110,6 +126,8 @@ class Game:
             if card is self.selected:
                 rect.y -= 18
             draw_card(self.screen, card, rect, card is self.selected)
+        if self.quiz:
+            self.quiz.draw(self.screen)
         pygame.display.flip()
 
     def run(self):
